@@ -1,0 +1,195 @@
+/* WC Sale Events — Frontend Styles v5 */
+
+/* ── Variables del evento (se sobreescriben inline desde PHP) ── */
+.wse-event-page {
+  --wse-primary:   #1a1a2e;
+  --wse-secondary: #e63946;
+  --wse-text:      #ffffff;
+}
+
+/* ──────────────────────────────────────────────────
+   TÍTULO: Blocksy y muchos temas tienen header fixed.
+   Añadimos padding-top al wrapper del evento para que
+   el contenido empiece siempre debajo del header.
+   Usamos una variable CSS que el tema puede sobreescribir,
+   con fallback de 80px (altura típica de un header).
+────────────────────────────────────────────────── */
+.wse-event-page {
+  padding-top: 0; /* el banner ya tiene su propio padding */
+}
+
+.wse-banner {
+  background: var(--wse-primary);
+  padding: 10% 2rem;
+  text-align: center;
+  position: relative;
+  z-index: 0;
+}
+
+.wse-event-title {
+  color: var(--wse-text);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 800;
+  margin: 0 0 1.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  position: relative;
+  z-index: 0;
+}
+
+/* ── Countdown ── */
+.wse-countdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.wse-cd-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wse-cd-unit span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--wse-secondary);
+  color: var(--wse-text);
+  font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  width: clamp(56px, 9vw, 84px);
+  height: clamp(56px, 9vw, 84px);
+  border-radius: 8px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.wse-cd-unit small {
+  color: var(--wse-text);
+  opacity: 0.75;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-top: 5px;
+}
+
+.wse-cd-sep {
+  color: var(--wse-text);
+  font-size: 2rem;
+  font-weight: 800;
+  padding-bottom: 1.4rem;
+  opacity: 0.5;
+}
+
+.wse-countdown-expired {
+  color: var(--wse-text);
+  font-size: 1.1rem;
+  opacity: 0.8;
+  padding: 1rem;
+}
+
+/* ── Banner CTA button ── */
+.wse-banner-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.7rem 1.8rem;
+  background: var(--wse-secondary);
+  color: var(--wse-text);
+  border-radius: 50px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: opacity 0.2s;
+}
+.wse-banner-btn:hover { opacity: 0.85; color: var(--wse-text); }
+
+/* ── Products section ── */
+.wse-products-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 3rem;
+}
+
+/* Grid: override completo de WooCommerce */
+ul.wse-products-grid.products {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+  gap: 1.5rem !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  float: none !important;
+  clear: both !important;
+}
+
+/* ──────────────────────────────────────────────────
+   BADGE — Solución definitiva:
+   El badge se pone con position:absolute dentro del
+   <a class="woocommerce-loop-product__link"> que
+   WooCommerce ya tiene como position:relative.
+   
+   IMPORTANTE: el hook woocommerce_before_shop_loop_item_title
+   se ejecuta DESPUÉS del cierre del <a>, así que el badge
+   queda fuera del ancla. Por eso en PHP usamos output buffer
+   para inyectarlo DENTRO de la imagen vía woocommerce_loop_product_link_close.
+   
+   Aquí en CSS simplemente garantizamos que el ancla tenga
+   position:relative y el badge esté bien posicionado.
+────────────────────────────────────────────────── */
+
+/* Ancla del badge: el li.product mismo */
+ul.wse-products-grid.products li.product {
+  position: relative !important;
+  margin: 0 !important;
+  float: none !important;
+  width: auto !important;
+}
+
+/* El <a> de la imagen también es ancla */
+ul.wse-products-grid.products li.product a.woocommerce-loop-product__link,
+ul.wse-products-grid.products li.product a.woocommerce-LoopProduct-link {
+  position: relative !important;
+  display: block !important;
+}
+
+/* El badge: position:absolute relativo al li.product */
+ul.wse-products-grid.products li.product .wse-badge {
+  position: absolute !important;
+  z-index: 9 !important;
+  pointer-events: none !important;
+}
+
+/* Fuera del grid (tienda general, shortcode) */
+.woocommerce ul.products li.product {
+  position: relative;
+}
+.woocommerce ul.products li.product .wse-badge {
+  position: absolute;
+  z-index: 9;
+  pointer-events: none;
+}
+
+.wse-no-products {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #777;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .wse-banner { padding: 20% 2rem; }
+  ul.wse-products-grid.products {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+    gap: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  ul.wse-products-grid.products {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .wse-cd-unit span { width: 52px; height: 52px; font-size: 1.4rem; }
+}
