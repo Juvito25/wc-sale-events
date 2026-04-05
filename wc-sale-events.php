@@ -5,6 +5,7 @@
  * Description: Gestor de eventos de ofertas para WooCommerce. Crea Black Friday, Cyber Monday y más con descuentos automáticos, countdown, badge personalizable y página pública.
  * Version:     1.0.0
  * Author:      Juvi Web
+ * Author URI:  https://juviweb.com
  * Requires at least: 6.0
  * Requires PHP: 8.0
  * License:     GPL-2.0+
